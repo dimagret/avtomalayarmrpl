@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 50 320 140" role="img" aria-label="Auto painter logo" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <linearGradient id="carPaint" x1="34" y1="96" x2="287" y2="126" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f51686"/>
+      <stop offset="0.17" stop-color="#f15a24"/>
+      <stop offset="0.38" stop-color="#ffcc31"/>
+      <stop offset="0.58" stop-color="#ef3d20"/>
+      <stop offset="0.78" stop-color="#c51f16"/>
+      <stop offset="1" stop-color="#45100b"/>
+    </linearGradient>
+    <linearGradient id="darkSweep" x1="42" y1="122" x2="285" y2="122" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ec188e"/>
+      <stop offset="0.2" stop-color="#00a5b8"/>
+      <stop offset="0.38" stop-color="#7dbb28"/>
+      <stop offset="0.56" stop-color="#22221e"/>
+      <stop offset="1" stop-color="#190907"/>
+    </linearGradient>
+    <linearGradient id="ribbon" x1="6" y1="132" x2="186" y2="62" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#be2aa0"/>
+      <stop offset="0.16" stop-color="#f11988"/>
+      <stop offset="0.31" stop-color="#00a4b7"/>
+      <stop offset="0.46" stop-color="#72b52b"/>
+      <stop offset="0.62" stop-color="#ffe24c"/>
+      <stop offset="0.8" stop-color="#f67922"/>
+      <stop offset="1" stop-color="#e82925"/>
+    </linearGradient>
+    <radialGradient id="hoodLight" cx="38%" cy="27%" r="68%">
+      <stop offset="0" stop-color="#fff3dc" stop-opacity=".66"/>
+      <stop offset=".42" stop-color="#fff3dc" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#fff3dc" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="145%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#100503" flood-opacity=".32"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <path fill="url(#carPaint)" d="M35 121c4-16 15-30 33-40 22-13 55-20 104-18 44 2 76 18 94 44 18 2 32 9 40 21 6 10 5 21-3 30H29c-8-12-6-23 6-37Z"/>
+    <path fill="#160706" d="M96 75c22-10 58-13 96-8 28 4 50 17 63 40H127c-31 0-56-13-31-32Z" opacity=".94"/>
+    <path fill="#f5e6d6" d="M129 70c22-6 49-6 72-2 20 4 35 14 45 31h-91c-23 0-39-7-45-18 5-5 12-9 19-11Z" opacity=".22"/>
+    <path fill="url(#hoodLight)" d="M47 111c33-35 80-52 139-48 41 3 71 18 91 43-39-14-85-17-139-8-43 7-81 20-112 39 3-10 10-18 21-26Z"/>
+    <path fill="url(#darkSweep)" d="M40 126c41-21 95-31 160-23 40 5 69 17 90 33-12 13-31 20-57 20H52c-17 0-28-5-34-14 5-6 12-11 22-16Z" opacity=".98"/>
+    <path fill="#120604" d="M31 145h273c-8 16-25 26-51 26H58c-21 0-35-6-42-18 4-4 9-7 15-8Z" opacity=".46"/>
+
+    <g>
+      <circle cx="86" cy="151" r="29" fill="#0c0d0f"/>
+      <circle cx="86" cy="151" r="18" fill="#f4f5f6"/>
+      <path fill="#858d96" d="M86 131l5 14 14-5-9 11 10 10-15-4-5 14-5-14-15 4 10-10-9-11 14 5 5-14Z"/>
+      <circle cx="86" cy="151" r="6" fill="#2a2e32"/>
+    </g>
+    <g>
+      <circle cx="247" cy="151" r="29" fill="#0c0d0f"/>
+      <circle cx="247" cy="151" r="18" fill="#f4f5f6"/>
+      <path fill="#858d96" d="M247 131l5 14 14-5-9 11 10 10-15-4-5 14-5-14-15 4 10-10-9-11 14 5 5-14Z"/>
+      <circle cx="247" cy="151" r="6" fill="#2a2e32"/>
+    </g>
+
+    <path fill="#ffdc5a" d="M279 107c13 2 23 10 27 22h-40c1-12 5-19 13-22Z"/>
+    <path fill="#0e0f10" d="M63 111c34-16 73-22 118-18 41 3 73 14 96 32-53-12-107-13-163-4-39 6-71 17-94 32 6-17 19-31 43-42Z" opacity=".23"/>
+  </g>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke="url(#ribbon)" stroke-width="15" d="M12 139c33-41 71-57 114-45 42 12 68-4 98-45"/>
+    <path stroke="#fff1bd" stroke-width="4.5" d="M18 136c34-35 70-48 110-36 36 10 60-6 90-45" opacity=".76"/>
+    <path stroke="url(#ribbon)" stroke-width="9" d="M17 157c27-36 57-48 93-37 34 10 56-1 82-30" opacity=".96"/>
+    <path stroke="#ffdf55" stroke-width="5.5" d="M35 109c29-20 58-25 88-13" opacity=".86"/>
+    <path stroke="#fff6dd" stroke-width="3.2" d="M82 88c24-8 46-6 66 6" opacity=".7"/>
+  </g>
+
+  <g filter="url(#shadow)">
+    <path fill="#441912" d="M5 160c16-13 27-29 34-49 5 22-1 41-19 57L0 181l5-21Z"/>
+    <path fill="#d29a5f" d="M11 155c11-9 19-22 25-37 1 16-5 29-18 39l-13 8 6-10Z"/>
+    <path fill="#2b0c09" d="M0 183l22-15-16 21-6 1v-7Z"/>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="АвтоМаляр">
+  <rect width="64" height="64" rx="14" fill="#161210"/>
+  <path d="M12 39h40l-4-13c-.8-2.6-3.2-4.4-5.9-4.4H23.4c-2.7 0-5.1 1.8-5.9 4.4L12 39Z" fill="#e46f22"/>
+  <path d="M20 29.5h25.5l1.9 6.2H17.8l2.2-6.2Z" fill="#fff3e6" opacity=".88"/>
+  <circle cx="22" cy="42" r="5" fill="#fff3e6"/>
+  <circle cx="42" cy="42" r="5" fill="#fff3e6"/>
+  <circle cx="22" cy="42" r="2.3" fill="#161210"/>
+  <circle cx="42" cy="42" r="2.3" fill="#161210"/>
+</svg>
