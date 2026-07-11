@@ -4,7 +4,7 @@ const mobileMenuToggle = document.querySelector("[data-mobile-menu-toggle]");
 const mobileMenuPanel = document.getElementById("mobile-menu-panel");
 const mobileSocialToggle = document.querySelector("[data-mobile-social-toggle]");
 const mobileSocials = document.querySelector("[data-mobile-socials]");
-const sections = ["hero", "about", "services", "works", "trust", "faq", "news", "contact"]
+const sections = ["hero", "about", "services", "works", "faq", "news", "contact"]
   .map((id) => document.getElementById(id))
   .filter(Boolean);
 let activeNavId = "";
@@ -61,6 +61,12 @@ const setActiveNav = (id) => {
   navLinks.forEach((link) => {
     const active = link.dataset.navLink === id;
     link.classList.toggle("is-active", active);
+
+    if (active) {
+      link.setAttribute("aria-current", "location");
+    } else {
+      link.removeAttribute("aria-current");
+    }
   });
 };
 
@@ -104,6 +110,46 @@ window.addEventListener("scroll", requestActiveNavUpdate, { passive: true });
 window.addEventListener("resize", requestActiveNavUpdate);
 window.addEventListener("load", updateActiveNav);
 updateActiveNav();
+
+const setupHeroServiceDisclosures = () => {
+  const showLabel = "\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u0441\u043f\u0438\u0441\u043e\u043a \u0440\u0430\u0431\u043e\u0442";
+  const hideLabel = "\u0421\u043a\u0440\u044b\u0442\u044c \u0441\u043f\u0438\u0441\u043e\u043a \u0440\u0430\u0431\u043e\u0442";
+
+  document.querySelectorAll(".hero-service-card").forEach((card, index) => {
+    const heading = card.querySelector("h3");
+    const list = card.querySelector(".hero-service-card__items");
+    if (!heading || !list || card.querySelector("[data-hero-service-toggle]")) return;
+
+    heading.id ||= `hero-service-title-${index + 1}`;
+    list.id ||= `hero-service-list-${index + 1}`;
+    card.setAttribute("aria-labelledby", heading.id);
+
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "hero-service-card__toggle";
+    toggle.dataset.heroServiceToggle = "";
+    toggle.setAttribute("aria-controls", list.id);
+    toggle.innerHTML = '<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>';
+    card.insertBefore(toggle, list);
+
+    const setExpanded = (expanded) => {
+      toggle.setAttribute("aria-expanded", String(expanded));
+      toggle.setAttribute(
+        "aria-label",
+        `${expanded ? hideLabel : showLabel}: ${heading.textContent.trim()}`
+      );
+      list.hidden = !expanded;
+    };
+
+    toggle.addEventListener("click", () => {
+      setExpanded(toggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    setExpanded(false);
+  });
+};
+
+setupHeroServiceDisclosures();
 const setupRevealMotion = () => {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const revealItems = new Set();
@@ -199,7 +245,7 @@ const closeCaseModal = () => {
 };
 
 const openWorkCaseModal = (trigger) => {
-  const panelId = trigger.getAttribute("aria-controls");
+  const panelId = trigger.dataset.sourcePanel;
   const panel = panelId ? document.getElementById(panelId) : null;
   const detail = panel?.querySelector(".case-detail");
 
@@ -231,13 +277,16 @@ const callModal = document.getElementById("call-modal");
 const callModalClose = document.querySelector("[data-call-modal-close]");
 const requestForm = document.getElementById("request-form");
 const requestThanks = document.getElementById("request-thanks");
-const requestHistoryButton = document.querySelector("[data-request-history]");
 const formStatus = document.getElementById("form-status");
+const nameField = document.getElementById("client-name");
+const phoneField = document.getElementById("client-phone");
 const taskField = document.getElementById("client-task");
+const personalDataAgreement = document.getElementById("personal-data-agreement");
+const offerAgreement = document.getElementById("offer-agreement");
+const submitButton = requestForm?.querySelector(".form-submit");
+const requestFields = [nameField, phoneField, taskField, personalDataAgreement, offerAgreement].filter(Boolean);
 const requestEndpoint = "/api/request";
 const requestSendErrorMessage = "Заявку не удалось отправить. Позвоните мастеру по номеру на сайте.";
-const requestHistoryKey = "avtomalyarRequestHistory";
-let requestThanksTimer;
 
 const setFormStatus = (message, state = "info") => {
   if (!formStatus) return;
@@ -246,78 +295,19 @@ const setFormStatus = (message, state = "info") => {
   formStatus.dataset.state = state;
 };
 
-const getRequestHistory = () => {
-  try {
-    const rawHistory = window.localStorage.getItem(requestHistoryKey);
-    if (!rawHistory) return null;
+try {
+  try { window.localStorage.removeItem("avtomalyarRequestHistory"); } catch {}
+} catch {
+  // The form works even when browser storage is unavailable.
+}
 
-    const history = JSON.parse(rawHistory);
-    if (!history || typeof history !== "object") return null;
-
-    return {
-      name: typeof history.name === "string" ? history.name : "",
-      phone: typeof history.phone === "string" ? history.phone : "",
-      task: typeof history.task === "string" ? history.task : ""
-    };
-  } catch {
-    return null;
-  }
-};
-
-const hasRequestHistory = () => {
-  const history = getRequestHistory();
-  return Boolean(history?.name || history?.phone || history?.task);
-};
-
-const updateRequestHistoryButton = () => {
-  requestHistoryButton?.toggleAttribute("hidden", !hasRequestHistory());
-};
-
-const applyRequestHistory = ({ includeTask = false, overwriteTask = false } = {}) => {
-  const history = getRequestHistory();
-  if (!history || !requestForm) return false;
-
-  const nameField = requestForm.querySelector("#client-name");
-  const phoneField = requestForm.querySelector("#client-phone");
-  const taskInput = requestForm.querySelector("#client-task");
-
-  if (history.name && nameField && !nameField.value.trim()) {
-    nameField.value = history.name;
-  }
-
-  if (history.phone && phoneField && !phoneField.value.trim()) {
-    phoneField.value = history.phone;
-  }
-
-  if (includeTask && history.task && taskInput && (overwriteTask || !taskInput.value.trim())) {
-    taskInput.value = history.task;
-  }
-
-  return true;
-};
-
-const saveRequestHistory = () => {
-  if (!requestForm) return;
-
-  const history = {
-    name: getRequestFieldValue("#client-name"),
-    phone: getRequestFieldValue("#client-phone"),
-    task: getRequestFieldValue("#client-task")
-  };
-
-  try {
-    window.localStorage.setItem(requestHistoryKey, JSON.stringify(history));
-    updateRequestHistoryButton();
-  } catch {
-    // If browser storage is unavailable, the form still works without history.
-  }
+const clearRequestValidation = () => {
+  requestFields.forEach((field) => field.removeAttribute("aria-invalid"));
 };
 
 const resetRequestModalState = ({ clearFields = false } = {}) => {
-  window.clearTimeout(requestThanksTimer);
   requestModal?.classList.remove("is-submitted");
   requestThanks?.setAttribute("hidden", "");
-  requestHistoryButton?.setAttribute("hidden", "");
   requestForm?.removeAttribute("hidden");
   setFormStatus("");
 
@@ -325,9 +315,7 @@ const resetRequestModalState = ({ clearFields = false } = {}) => {
     requestForm?.reset();
   }
 
-  requestForm?.querySelectorAll("[aria-invalid='true']").forEach((field) => {
-    field.removeAttribute("aria-invalid");
-  });
+  clearRequestValidation();
 };
 
 const showRequestThanks = () => {
@@ -335,14 +323,9 @@ const showRequestThanks = () => {
   requestThanks?.removeAttribute("hidden");
   requestModal?.classList.add("is-submitted");
   requestThanks?.focus({ preventScroll: true });
-
-  requestThanksTimer = window.setTimeout(() => {
-    closeRequestModal();
-  }, 4200);
 };
 
 const closeRequestModal = () => {
-  window.clearTimeout(requestThanksTimer);
   if (requestModal?.open) {
     requestModal.close();
   } else {
@@ -364,8 +347,6 @@ const openRequestModal = (trigger) => {
   if (taskField) {
     taskField.value = taskPrefill;
   }
-  applyRequestHistory({ includeTask: !taskPrefill });
-  updateRequestHistoryButton();
   setFormStatus("");
 
   if (typeof requestModal.showModal === "function") {
@@ -376,41 +357,28 @@ const openRequestModal = (trigger) => {
 
   window.setTimeout(() => {
     const firstEmptyField = requestForm?.querySelector("input:not([type='radio']):not([value]), textarea");
-    (taskField?.value ? document.getElementById("client-name") : firstEmptyField)?.focus({ preventScroll: true });
+    (taskField?.value ? nameField : firstEmptyField)?.focus({ preventScroll: true });
   }, 80);
 };
 
-requestHistoryButton?.addEventListener("click", () => {
-  if (!applyRequestHistory({ includeTask: true, overwriteTask: true })) return;
+document.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element)) return;
 
-  requestForm?.querySelectorAll("[aria-invalid='true']").forEach((field) => {
-    field.removeAttribute("aria-invalid");
-  });
-  setFormStatus("Данные из прошлой заявки подставлены. Проверьте и отправьте заявку.", "info");
-});
-
-document.querySelectorAll("[data-prefill]").forEach((button) => {
-  button.addEventListener("click", (event) => {
+  const prefillTrigger = event.target.closest("[data-prefill]");
+  if (prefillTrigger) {
     event.preventDefault();
-    event.stopPropagation();
-    openRequestModal(button);
-  });
-});
+    openRequestModal(prefillTrigger);
+    return;
+  }
 
-document.addEventListener("click", (event) => {
-  const requestTrigger = event.target instanceof Element
-    ? event.target.closest("[data-request-open], a[href='#request-modal']")
-    : null;
-  if (!requestTrigger) return;
+  const requestTrigger = event.target.closest("[data-request-open], a[href='#request-modal']");
+  if (requestTrigger) {
+    event.preventDefault();
+    openRequestModal(requestTrigger);
+    return;
+  }
 
-  event.preventDefault();
-  openRequestModal(requestTrigger);
-});
-
-document.addEventListener("click", (event) => {
-  const callTrigger = event.target instanceof Element
-    ? event.target.closest("[data-call-open], a[href='#call-modal']")
-    : null;
+  const callTrigger = event.target.closest("[data-call-open], a[href='#call-modal']");
   if (!callTrigger) return;
 
   event.preventDefault();
@@ -479,15 +447,15 @@ document.querySelectorAll(".faq-item").forEach((item) => {
   });
 });
 
-const getRequestFieldValue = (selector) => requestForm?.querySelector(selector)?.value.trim() || "не указано";
+const getRequestFieldValue = (field) => field?.value.trim() || "не указано";
 
 const buildRequestPayload = () => ({
-  name: getRequestFieldValue("#client-name"),
-  phone: getRequestFieldValue("#client-phone"),
-  task: getRequestFieldValue("#client-task"),
-  personalDataAgreement: Boolean(requestForm?.querySelector("#personal-data-agreement")?.checked),
-  offerAgreement: Boolean(requestForm?.querySelector("#offer-agreement")?.checked),
-  pageUrl: window.location.href,
+  name: getRequestFieldValue(nameField),
+  phone: getRequestFieldValue(phoneField),
+  task: getRequestFieldValue(taskField),
+  personalDataAgreement: Boolean(personalDataAgreement?.checked),
+  offerAgreement: Boolean(offerAgreement?.checked),
+  pageUrl: window.location.pathname,
   source: "request_form"
 });
 
@@ -520,17 +488,12 @@ const trackLeadSubmitSuccess = () => {
   });
 };
 const validateRequestForm = () => {
-  const nameField = requestForm?.querySelector("#client-name");
-  const phoneField = requestForm?.querySelector("#client-phone");
-  const taskField = requestForm?.querySelector("#client-task");
-  const personalDataAgreement = requestForm?.querySelector("#personal-data-agreement");
-  const offerAgreement = requestForm?.querySelector("#offer-agreement");
   const nameValue = nameField?.value.trim() || "";
   const phoneValue = phoneField?.value.trim() || "";
   const taskValue = taskField?.value.trim() || "";
   const phoneDigits = phoneValue.replace(/\D/g, "");
 
-  [nameField, phoneField, taskField, personalDataAgreement, offerAgreement].forEach((field) => field?.removeAttribute("aria-invalid"));
+  clearRequestValidation();
 
   if (nameValue.length < 2) {
     setFormStatus("Укажите имя: так мастеру будет понятно, как к вам обращаться.", "error");
@@ -575,13 +538,11 @@ requestForm?.addEventListener("submit", async (event) => {
 
   if (!validateRequestForm()) return;
 
-  const submitButton = requestForm.querySelector(".form-submit");
   submitButton?.setAttribute("disabled", "");
   setFormStatus("Отправляем заявку...", "info");
 
   try {
     await submitRequest();
-    saveRequestHistory();
     trackLeadSubmitSuccess();
     showRequestThanks();
   } catch {
@@ -591,7 +552,7 @@ requestForm?.addEventListener("submit", async (event) => {
   }
 });
 
-requestForm?.querySelectorAll("input, textarea").forEach((field) => {
+requestFields.forEach((field) => {
   field.addEventListener("input", () => {
     field.removeAttribute("aria-invalid");
   });

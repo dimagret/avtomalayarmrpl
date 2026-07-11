@@ -1,0 +1,71 @@
+/* Case-page additions layered on the shared legal-page layout. */
+.case-page .page-shell {
+  width: min(1080px, calc(100vw - (var(--content-gutter) * 2)));
+}
+
+.case-page .legal-header h1 {
+  max-width: 900px;
+}
+
+.case-page .legal-nav span[aria-current="page"] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid rgb(255 223 194 / 14%);
+  border-radius: 999px;
+  color: var(--muted);
+  font-weight: 850;
+}
+
+.case-gallery {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px !important;
+  max-width: 100% !important;
+}
+
+.case-gallery figure {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgb(255 223 194 / 16%);
+  border-radius: 20px;
+  background: rgb(6 6 6 / 52%);
+}
+
+.case-gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+}
+
+.case-gallery figcaption {
+  padding: 10px 14px 12px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.case-related {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.case-related a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid rgb(255 223 194 / 16%);
+  border-radius: 14px;
+  background: rgb(255 255 255 / 5%);
+}
+
+@media (max-width: 760px) {
+  .case-gallery {
+    grid-template-columns: 1fr;
+  }
+}

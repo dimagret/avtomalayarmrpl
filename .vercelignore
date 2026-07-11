@@ -1,3 +1,16 @@
 output/
 test-results/
 .playwright-cli/
+
+# Source/reference images are kept in Git; production uses assets/optimized/.
+assets/before-after/
+assets/hero-backgrounds/
+assets/services/
+assets/logo-automalyar-car.png
+assets/logo-automalyar-car-cropped.png
+assets/logo-automalyar-car-transparent.png
+variants/premium-onepage/assets/works/case-01-after.jpg
+variants/premium-onepage/assets/works/case-01-before.jpg
+variants/premium-onepage/assets/works/case-02-after.jpg
+variants/premium-onepage/assets/works/case-02-before.jpg
+variants/premium-onepage/assets/works/case-03-after.jpg

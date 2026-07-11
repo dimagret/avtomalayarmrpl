@@ -93,9 +93,14 @@ function normalizeLead(body) {
     task: truncate(cleanString(body.task), 1200),
     personalDataAgreement: toBoolean(body.personalDataAgreement),
     offerAgreement: toBoolean(body.offerAgreement),
-    pageUrl: truncate(cleanString(body.pageUrl), 500),
+    pageUrl: normalizePagePath(body.pageUrl),
     source: truncate(cleanString(body.source) || "request_form", 80)
   };
+}
+
+function normalizePagePath(value) {
+  const path = truncate(cleanString(value), 500).split(/[?#]/, 1)[0];
+  return path.startsWith("/") ? path : "";
 }
 
 function validateLead(lead) {
