@@ -2,6 +2,16 @@ output/
 test-results/
 .playwright-cli/
 
+# Internal operating files must not be published.
+SEO_*.md
+AGENTS.md
+debug.log
+.env*
+.agents/
+.codex/
+claude/
+design-concepts/
+
 # Source/reference images are kept in Git; production uses assets/optimized/.
 assets/before-after/
 assets/hero-backgrounds/

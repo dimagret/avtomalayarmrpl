@@ -109,14 +109,25 @@
     </script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="preload" as="image" href="/assets/optimized/paint-car-brown-hero-960.jpg" imagesrcset="/assets/optimized/paint-car-brown-hero-960.jpg 1x, /assets/optimized/paint-car-brown-hero-1440.jpg 2x" fetchpriority="high">
-    <link rel="stylesheet" href="/variants/premium-onepage/styles.css?v=20260711-hero-c4">
-    <script>
-      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
+    <link rel="stylesheet" href="/variants/premium-onepage/styles.css?v=20260713-news-grid-1">
+    <script src="/assets/analytics-events.js?v=20260713-4" defer></script>
     <script src="/variants/premium-onepage/script.js?v=20260711-hero-c1" defer></script>
   </head>
-  <body>
+  <body data-page-type="home">
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+      window.dataLayer = window.dataLayer || [];
+      (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+      })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=110708831', 'ym');
+
+      ym(110708831, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer:document.referrer, url:location.href, accurateTrackBounce:true, trackLinks:true});
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/110708831" style="position:absolute; left:-9999px;" width="1" height="1" alt=""></div></noscript>
+    <!-- /Yandex.Metrika counter -->
     <a class="skip-link" href="#main">Перейти к содержанию</a>
 
     <header class="site-header" aria-label="Шапка сайта">
@@ -129,11 +140,11 @@
       </a>
 
       <div class="header-actions">
-        <a class="header-phone" href="tel:+79497155914" aria-label="Позвонить Miranda, +7 949 715-59-14">
+        <a class="header-phone" href="tel:+79497155914" data-phone-label="miranda" aria-label="Позвонить Miranda, +7 949 715-59-14">
           <span class="header-phone__label">Miranda</span>
           <span class="header-phone__number">+7 (949) 715-59-14</span>
         </a>
-        <a class="header-phone" href="tel:+79515167666" aria-label="Позвонить Т 2, +7 951 516-76-66">
+        <a class="header-phone" href="tel:+79515167666" data-phone-label="t2" aria-label="Позвонить Т 2, +7 951 516-76-66">
           <span class="header-phone__label">Т 2</span>
           <span class="header-phone__number">+7 (951) 516-76-66</span>
         </a>
@@ -333,13 +344,13 @@
                 <p>Повреждения после ДТП, вмятины, коррозия, пороги, сварка, покраска и полировка кузова.</p>
               </div>
               <div class="service-list">
-                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Стапель после ДТП"><div class="service-row__copy"><strong>Стапель после ДТП</strong><span>если был удар и нужно проверить геометрию</span></div></button>
-                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Рихтовка"><div class="service-row__copy"><strong>Рихтовка</strong><span>если есть вмятины или деформация</span></div></button>
-                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Песоструй"><div class="service-row__copy"><strong>Песоструй</strong><span>если нужно очистить металл и проблемные зоны</span></div></button>
-                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Сварка"><div class="service-row__copy"><strong>Сварка</strong><span>если повреждён металл или есть коррозия</span></div></button>
-                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Замена порогов"><div class="service-row__copy"><strong>Замена порогов</strong><span>если пороги сгнили или повреждены</span></div></button>
-                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Покраска"><div class="service-row__copy"><strong>Покраска</strong><span>если нужна подготовка и окрашивание детали</span></div></button>
-                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Полировка кузова"><div class="service-row__copy"><strong>Полировка кузова</strong><span>если ЛКП потускнело или есть мелкие дефекты</span></div></button>
+                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Стапель после ДТП" data-service-slug="frame-straightening"><div class="service-row__copy"><strong>Стапель после ДТП</strong><span>если был удар и нужно проверить геометрию</span></div></button>
+                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Рихтовка" data-service-slug="dent-straightening"><div class="service-row__copy"><strong>Рихтовка</strong><span>если есть вмятины или деформация</span></div></button>
+                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Песоструй" data-service-slug="sandblasting"><div class="service-row__copy"><strong>Песоструй</strong><span>если нужно очистить металл и проблемные зоны</span></div></button>
+                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Сварка" data-service-slug="welding"><div class="service-row__copy"><strong>Сварка</strong><span>если повреждён металл или есть коррозия</span></div></button>
+                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Замена порогов" data-service-slug="sill-replacement"><div class="service-row__copy"><strong>Замена порогов</strong><span>если пороги сгнили или повреждены</span></div></button>
+                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Покраска" data-service-slug="painting"><div class="service-row__copy"><strong>Покраска</strong><span>если нужна подготовка и окрашивание детали</span></div></button>
+                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Полировка кузова" data-service-slug="body-polishing"><div class="service-row__copy"><strong>Полировка кузова</strong><span>если ЛКП потускнело или есть мелкие дефекты</span></div></button>
               </div>
             </article>
 
@@ -350,8 +361,8 @@
                 <p>Ремонт ходовой, ДВС и замена ГРМ после осмотра автомобиля.</p>
               </div>
               <div class="service-list">
-                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Ремонт ходовой и ДВС"><div class="service-row__copy"><strong>Ремонт ходовой и ДВС</strong><span>стуки, люфты, перебои, потеря мощности</span></div></button>
-                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Замена ГРМ"><div class="service-row__copy"><strong>Замена ГРМ</strong><span>регламентная замена или подозрение на износ</span></div></button>
+                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Ремонт ходовой и ДВС" data-service-slug="suspension-engine-repair"><div class="service-row__copy"><strong>Ремонт ходовой и ДВС</strong><span>стуки, люфты, перебои, потеря мощности</span></div></button>
+                <button class="service-row" type="button" data-prefill="Хочу записаться на услугу: Замена ГРМ" data-service-slug="timing-belt-replacement"><div class="service-row__copy"><strong>Замена ГРМ</strong><span>регламентная замена или подозрение на износ</span></div></button>
               </div>
             </article>
           </div>
@@ -387,7 +398,7 @@
                 <span class="case-summary__action">Подробнее</span>
               </button>
               <div class="case-panel" id="case-01-panel" hidden>
-                <div class="case-detail">
+                <div class="case-detail" data-source-slug="patriot-body-repair">
                   <div class="case-detail__visual">
                     <figure class="case-photo"><img src="/variants/premium-onepage/assets/works/optimized/case-01-before-1280.jpg" srcset="/variants/premium-onepage/assets/works/optimized/case-01-before-640.jpg 640w, /variants/premium-onepage/assets/works/optimized/case-01-before-1280.jpg 1280w" sizes="(max-width: 760px) 100vw, 50vw" width="1280" height="960" decoding="async" alt="Автомобиль Patriot до кузовного ремонта" loading="lazy"><figcaption>Фото 1 до</figcaption></figure>
                     <figure class="case-photo"><img src="/variants/premium-onepage/assets/works/optimized/case-01-after-1280.jpg" srcset="/variants/premium-onepage/assets/works/optimized/case-01-after-640.jpg 640w, /variants/premium-onepage/assets/works/optimized/case-01-after-1280.jpg 1280w" sizes="(max-width: 760px) 100vw, 50vw" width="1280" height="960" decoding="async" alt="Автомобиль Patriot после кузовного ремонта" loading="lazy"><figcaption>Фото 2 после</figcaption></figure>
@@ -402,8 +413,8 @@
                       <span class="case-detail__actions-label">Видеообзор ремонта + отзыв клиента:</span>
                       <a class="case-detail__link" href="https://max.ru/c/-69607732507997/AZ3KJc-MOGo" target="_blank" rel="noopener noreferrer" aria-label="Смотреть видеообзор ремонта автомобиля Patriot в MAX">Смотреть в MAX</a>
                       <a class="case-detail__link" href="https://t.me/colordrivemrpl/556" target="_blank" rel="noopener noreferrer" aria-label="Смотреть видеообзор ремонта автомобиля Patriot в Telegram">Смотреть в Telegram</a>
-                      <a class="case-detail__link" href="/cases/patriot-body-repair.html">Страница кейса</a>
-                      <a class="work-card__cta" href="#request-modal" data-prefill="Хочу записаться после просмотра кейса автомобиля Patriot">Оставить заявку</a>
+                      <a class="case-detail__link case-detail__page-link" href="/cases/patriot-body-repair.html"><svg class="case-detail__page-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M11.5 3.5h5v5M9 11l7.2-7.2M14.5 10.5v5a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h5"/></svg><span>Страница кейса</span></a>
+                      <a class="work-card__cta" href="#request-modal" data-prefill="Хочу записаться после просмотра кейса автомобиля Patriot" data-service-slug="case-patriot">Оставить заявку</a>
                     </div>
                   </div>
                 </div>
@@ -419,7 +430,7 @@
                 <span class="case-summary__action">Подробнее</span>
               </button>
               <div class="case-panel" id="case-02-panel" hidden>
-                <div class="case-detail">
+                <div class="case-detail" data-source-slug="honda-accord-after-accident">
                   <div class="case-detail__visual">
                     <figure class="case-photo"><img src="/variants/premium-onepage/assets/works/optimized/case-02-before-1280.jpg" srcset="/variants/premium-onepage/assets/works/optimized/case-02-before-640.jpg 640w, /variants/premium-onepage/assets/works/optimized/case-02-before-1280.jpg 1280w" sizes="(max-width: 760px) 100vw, 50vw" width="1280" height="960" decoding="async" alt="Honda Accord Type S до кузовного ремонта после ДТП" loading="lazy"><figcaption>Фото 1 до</figcaption></figure>
                     <figure class="case-photo"><img src="/variants/premium-onepage/assets/works/optimized/case-02-after-1280.jpg" srcset="/variants/premium-onepage/assets/works/optimized/case-02-after-640.jpg 640w, /variants/premium-onepage/assets/works/optimized/case-02-after-1280.jpg 1280w" sizes="(max-width: 760px) 100vw, 50vw" width="1280" height="960" decoding="async" alt="Honda Accord Type S после кузовного ремонта после ДТП" loading="lazy"><figcaption>Фото 2 после</figcaption></figure>
@@ -433,8 +444,8 @@
                       <span class="case-detail__actions-label">Видеообзор ремонта + отзыв клиента:</span>
                       <a class="case-detail__link" href="https://max.ru/c/-69607732507997/AZ2fmmgTOGo" target="_blank" rel="noopener noreferrer" aria-label="Смотреть видеообзор ремонта и отзыв клиента по Honda Accord Type S в MAX">Смотреть в MAX</a>
                       <a class="case-detail__link" href="https://t.me/colordrivemrpl/538" target="_blank" rel="noopener noreferrer" aria-label="Смотреть видеообзор ремонта и отзыв клиента по Honda Accord Type S в Telegram">Смотреть в Telegram</a>
-                      <a class="case-detail__link" href="/cases/honda-accord-after-accident.html">Страница кейса</a>
-                      <a class="work-card__cta" href="#request-modal" data-prefill="Хочу записаться после просмотра кейса Honda Accord Type S">Оставить заявку</a>
+                      <a class="case-detail__link case-detail__page-link" href="/cases/honda-accord-after-accident.html"><svg class="case-detail__page-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M11.5 3.5h5v5M9 11l7.2-7.2M14.5 10.5v5a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h5"/></svg><span>Страница кейса</span></a>
+                      <a class="work-card__cta" href="#request-modal" data-prefill="Хочу записаться после просмотра кейса Honda Accord Type S" data-service-slug="case-honda-accord">Оставить заявку</a>
                     </div>
                   </div>
                 </div>
@@ -450,7 +461,7 @@
                 <span class="case-summary__action">Подробнее</span>
               </button>
               <div class="case-panel" id="case-03-panel" hidden>
-                <div class="case-detail">
+                <div class="case-detail" data-source-slug="kia-sportage-after-accident">
                   <div class="case-detail__visual">
                     <figure class="case-photo"><img src="/variants/premium-onepage/assets/works/optimized/case-03-before-1280.jpg" srcset="/variants/premium-onepage/assets/works/optimized/case-03-before-640.jpg 640w, /variants/premium-onepage/assets/works/optimized/case-03-before-1280.jpg 1280w" sizes="(max-width: 760px) 100vw, 50vw" width="1280" height="960" decoding="async" alt="Kia Sportage до кузовного ремонта после ДТП" loading="lazy"><figcaption>Фото 1 до</figcaption></figure>
                     <figure class="case-photo"><img src="/variants/premium-onepage/assets/works/optimized/case-03-after-1280.jpg" srcset="/variants/premium-onepage/assets/works/optimized/case-03-after-640.jpg 640w, /variants/premium-onepage/assets/works/optimized/case-03-after-1280.jpg 1280w" sizes="(max-width: 760px) 100vw, 50vw" width="1280" height="960" decoding="async" alt="Kia Sportage после кузовного ремонта после ДТП" loading="lazy"><figcaption>Фото 2 после</figcaption></figure>
@@ -464,8 +475,8 @@
                       <span class="case-detail__actions-label">Видеообзор ремонта + отзыв клиента:</span>
                       <a class="case-detail__link" href="https://max.ru/c/-69607732507997/AZ5i8sarOGo" target="_blank" rel="noopener noreferrer" aria-label="Смотреть видеообзор ремонта и отзыв клиента по Kia Sportage в MAX">Смотреть в MAX</a>
                       <a class="case-detail__link" href="https://t.me/colordrivemrpl/596" target="_blank" rel="noopener noreferrer" aria-label="Смотреть видеообзор ремонта и отзыв клиента по Kia Sportage в Telegram">Смотреть в Telegram</a>
-                      <a class="case-detail__link" href="/cases/kia-sportage-after-accident.html">Страница кейса</a>
-                      <a class="work-card__cta" href="#request-modal" data-prefill="Хочу записаться после просмотра кейса Kia Sportage">Оставить заявку</a>
+                      <a class="case-detail__link case-detail__page-link" href="/cases/kia-sportage-after-accident.html"><svg class="case-detail__page-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M11.5 3.5h5v5M9 11l7.2-7.2M14.5 10.5v5a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h5"/></svg><span>Страница кейса</span></a>
+                      <a class="work-card__cta" href="#request-modal" data-prefill="Хочу записаться после просмотра кейса Kia Sportage" data-service-slug="case-kia-sportage">Оставить заявку</a>
                     </div>
                   </div>
                 </div>
@@ -531,18 +542,18 @@
           </header>
 
           <div class="news-grid" aria-label="Новости компании">
-            <article class="news-card news-card--featured">
+            <article class="news-card news-card--featured" data-source-slug="news-three-staples">
               <span class="news-card__meta">Оборудование</span>
-              <h3>Новый стационарный стапель</h3>
-              <p>В публикации станции показан новый стационарный стапель и описана его комплектация.</p>
-              <div class="news-card__actions" aria-label="Подробнее и видео о новом стапеле">
+              <h3>3 стапеля на СКР «АвтоМаляр»</h3>
+              <p>На станции теперь работают три стапеля. В новой публикации — о грузоподъёмности третьего стапеля до 3 тонн, компьютерном расчёте вытяжки и стреле для восстановления верхней части кузова.</p>
+              <div class="news-card__actions" aria-label="Публикации о трёх стапелях на СКР АвтоМаляр">
                 <span class="news-card__actions-label">Подробнее + видео</span>
-                <a class="news-card__link" href="https://t.me/colordrivemrpl/629" target="_blank" rel="noopener noreferrer">Telegram</a>
-                <a class="news-card__link" href="https://max.ru/c/-69607732507997/AZ8Hjpg8OGo" target="_blank" rel="noopener noreferrer">MAX</a>
-                <a class="news-card__link" href="https://vk.ru/avtomalyarmrpl" target="_blank" rel="noopener noreferrer">ВКонтакте</a>
+                <a class="news-card__link" href="https://t.me/colordrivemrpl/649" target="_blank" rel="noopener noreferrer">Telegram</a>
+                <a class="news-card__link" href="https://max.ru/c/-69607732507997/AZ9VwGWxOGo" target="_blank" rel="noopener noreferrer">MAX</a>
+                <a class="news-card__link" href="https://vk.ru/wall-236598557_190" target="_blank" rel="noopener noreferrer">ВКонтакте</a>
               </div>
             </article>
-            <article class="news-card">
+            <article class="news-card" data-source-slug="news-used-cars">
               <span class="news-card__meta">Автомобили</span>
               <h3>Продажа б/у автомобилей</h3>
               <p>Опубликована информация о продаже автомобилей в Мариуполе. Подробности доступны в исходных публикациях.</p>
@@ -563,8 +574,8 @@
             <h2 id="contact-title">Записаться на осмотр</h2>
             <p class="contact-lead">Свяжитесь удобным способом — мастер ответит и согласует время.</p>
             <div class="contact-links">
-              <a class="contact-link" href="tel:+79497155914"><span class="contact-link__label">Миранда <span class="contact-link__note">/ Предпочтительно звонок</span></span><span class="contact-link__value">+7 (949) 715-59-14</span></a>
-              <a class="contact-link" href="tel:+79515167666"><span class="contact-link__label">Т2 <span class="contact-link__note">/ Предпочтительно звонок</span></span><span class="contact-link__value">+7 (951) 516-76-66</span></a>
+              <a class="contact-link" href="tel:+79497155914" data-phone-label="miranda"><span class="contact-link__label">Миранда <span class="contact-link__note">/ Предпочтительно звонок</span></span><span class="contact-link__value">+7 (949) 715-59-14</span></a>
+              <a class="contact-link" href="tel:+79515167666" data-phone-label="t2"><span class="contact-link__label">Т2 <span class="contact-link__note">/ Предпочтительно звонок</span></span><span class="contact-link__value">+7 (951) 516-76-66</span></a>
               <a class="contact-link" href="https://max.ru/join/RrYl8Mk7Q4fVEFPQbou7sXP1Gti13PaiBuZsLbEET98" target="_blank" rel="noopener noreferrer"><span class="contact-link__label">MAX</span><span class="contact-link__value">Канал АвтоМаляр</span></a>
               <a class="contact-link" href="https://t.me/Smahtinmrpl" target="_blank" rel="noopener noreferrer"><span class="contact-link__label">Telegram</span><span class="contact-link__value">@Smahtinmrpl</span></a>
               <a class="contact-link" href="mailto:avtomalyarmrpl@mail.ru"><span class="contact-link__label">E-mail</span><span class="contact-link__value">avtomalyarmrpl@mail.ru</span></a>
@@ -595,7 +606,10 @@
 
     <dialog class="case-modal" id="case-modal" aria-label="Подробности работы">
       <div class="case-modal__shell">
-        <button class="case-modal__close" type="button" data-case-modal-close aria-label="Закрыть подробности">Закрыть</button>
+        <button class="case-modal__close" type="button" data-case-modal-close aria-label="Закрыть подробности">
+          <span class="case-modal__close-icon" aria-hidden="true"></span>
+          <span class="case-modal__close-label">Закрыть</span>
+        </button>
         <div class="case-modal__content" id="case-modal-content"></div>
       </div>
     </dialog>
@@ -603,15 +617,19 @@
     <dialog class="request-modal" id="request-modal" aria-labelledby="request-modal-title">
       <div class="request-modal__shell">
         <button class="request-modal__close" type="button" data-request-modal-close aria-label="Закрыть форму заявки">Закрыть</button>
-        <form class="request-form request-form--modal" id="request-form" action="/api/request" method="post">
+        <form class="request-form request-form--modal ym-disable-submit" id="request-form" action="/api/request" method="post">
           <div class="request-form__head">
             <p class="eyebrow">Заявка</p>
             <h3 id="request-modal-title">Записаться на осмотр</h3>
             <p>Заполните имя, телефон и задачу по автомобилю.</p>
           </div>
-          <label class="form-row">Имя<input id="client-name" name="name" autocomplete="name" required></label>
-          <label class="form-row">Телефон<input id="client-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></label>
-          <label class="form-row form-row--task">Автомобиль и задача<textarea id="client-task" name="task" rows="4" placeholder="Например: Kia Sportage, удар в крыло" required></textarea></label>
+          <label class="form-row">Имя<input class="ym-disable-keys" id="client-name" name="name" autocomplete="name" required></label>
+          <label class="form-row">Телефон<input class="ym-disable-keys" id="client-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required></label>
+          <label class="form-row form-row--task">Автомобиль и задача<textarea class="ym-disable-keys" id="client-task" name="task" rows="4" placeholder="Например: Kia Sportage, удар в крыло" required></textarea></label>
+          <div class="form-honeypot" aria-hidden="true">
+            <label for="client-website">Не заполняйте это поле</label>
+            <input class="ym-disable-keys" id="client-website" name="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
           <fieldset class="legal-consents legal-consents--stacked">
             <legend class="legal-consents__legend">Обязательные согласия</legend>
             <label class="legal-consent">
@@ -644,11 +662,11 @@
           <h3 id="call-modal-title">Позвонить мастеру</h3>
           <p>Выберите рабочий номер для звонка.</p>
           <div class="call-options" aria-label="Номера для звонка">
-            <a class="call-option" href="tel:+79497155914">
+            <a class="call-option" href="tel:+79497155914" data-phone-label="miranda">
               <span>Сеть Miranda</span>
               <strong>+7 (949) 715-59-14</strong>
             </a>
-            <a class="call-option" href="tel:+79515167666">
+            <a class="call-option" href="tel:+79515167666" data-phone-label="t2">
               <span>Сеть Т2</span>
               <strong>+7 (951) 516-76-66</strong>
             </a>

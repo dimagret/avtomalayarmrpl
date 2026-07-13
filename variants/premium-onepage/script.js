@@ -281,11 +281,13 @@ const formStatus = document.getElementById("form-status");
 const nameField = document.getElementById("client-name");
 const phoneField = document.getElementById("client-phone");
 const taskField = document.getElementById("client-task");
+const websiteField = document.getElementById("client-website");
 const personalDataAgreement = document.getElementById("personal-data-agreement");
 const offerAgreement = document.getElementById("offer-agreement");
 const submitButton = requestForm?.querySelector(".form-submit");
 const requestFields = [nameField, phoneField, taskField, personalDataAgreement, offerAgreement].filter(Boolean);
 const requestEndpoint = "/api/request";
+let requestFormStartedAt = 0;
 const requestSendErrorMessage = "Заявку не удалось отправить. Позвоните мастеру по номеру на сайте.";
 
 const setFormStatus = (message, state = "info") => {
@@ -343,6 +345,7 @@ const openRequestModal = (trigger) => {
   if (!requestModal) return;
 
   resetRequestModalState({ clearFields: true });
+  requestFormStartedAt = performance.now();
   const taskPrefill = trigger?.dataset.prefill || "";
   if (taskField) {
     taskField.value = taskPrefill;
@@ -456,7 +459,9 @@ const buildRequestPayload = () => ({
   personalDataAgreement: Boolean(personalDataAgreement?.checked),
   offerAgreement: Boolean(offerAgreement?.checked),
   pageUrl: window.location.pathname,
-  source: "request_form"
+  source: "request_form",
+  website: websiteField?.value.trim() || "",
+  formElapsedMs: Math.max(0, Math.round(performance.now() - requestFormStartedAt))
 });
 
 const submitRequest = async () => {
@@ -479,13 +484,29 @@ const submitRequest = async () => {
   }
 };
 
-const trackLeadSubmitSuccess = () => {
-  if (typeof window.va !== "function") return;
+const REQUEST_ERROR_TYPES = new Set([
+  "invalid_name",
+  "invalid_phone",
+  "invalid_task",
+  "personal_data_agreement_required",
+  "offer_agreement_required",
+  "spam_detected",
+  "submission_too_fast",
+  "invalid_form_timing",
+  "invalid_source",
+  "invalid_origin",
+  "rate_limited",
+  "request_too_large",
+  "telegram_not_configured",
+  "telegram_send_failed",
+  "request_failed"
+]);
 
-  window.va("event", "lead_submit_success", {
-    form: "request_modal",
-    source: "request_form"
-  });
+const trackRequestEvent = (eventName, errorType = "") => {
+  if (typeof window.avtomalyarTrack !== "function") return;
+  const parameters = { form_name: "request_modal", placement: "request_modal" };
+  if (errorType) parameters.error_type = errorType;
+  window.avtomalyarTrack(eventName, parameters);
 };
 const validateRequestForm = () => {
   const nameValue = nameField?.value.trim() || "";
@@ -543,9 +564,11 @@ requestForm?.addEventListener("submit", async (event) => {
 
   try {
     await submitRequest();
-    trackLeadSubmitSuccess();
+    trackRequestEvent("lead_form_success");
     showRequestThanks();
-  } catch {
+  } catch (error) {
+    const errorType = REQUEST_ERROR_TYPES.has(error?.message) ? error.message : "network_or_unknown";
+    trackRequestEvent("lead_form_error", errorType);
     setFormStatus(requestSendErrorMessage, "error");
   } finally {
     submitButton?.removeAttribute("disabled");
