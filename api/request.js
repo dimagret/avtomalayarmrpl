@@ -1,4 +1,11 @@
+const crypto = require("crypto");
 const TELEGRAM_API_BASE = "https://api.telegram.org";
+const MAX_BODY_BYTES = 16 * 1024;
+const MIN_FORM_ELAPSED_MS = 1200;
+const MAX_FORM_ELAPSED_MS = 2 * 60 * 60 * 1000;
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 5;
+const rateLimitBuckets = new Map();
 
 module.exports = async function handler(req, res) {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
@@ -6,6 +13,17 @@ module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ ok: false, error: "method_not_allowed" });
+  }
+
+  const originError = validateRequestOrigin(req);
+  if (originError) {
+    return res.status(403).json({ ok: false, error: originError });
+  }
+
+  const rateLimit = consumeRateLimit(req);
+  if (!rateLimit.allowed) {
+    res.setHeader("Retry-After", String(rateLimit.retryAfterSeconds));
+    return res.status(429).json({ ok: false, error: "rate_limited" });
   }
 
   try {
@@ -50,28 +68,84 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json({ ok: true });
   } catch (error) {
+    if (error?.code === "request_too_large") {
+      return res.status(413).json({ ok: false, error: "request_too_large" });
+    }
+
     console.error("Lead request failed", error);
     return res.status(500).json({ ok: false, error: "request_failed" });
   }
 };
 
+function validateRequestOrigin(req) {
+  const origin = cleanString(req.headers?.origin);
+  if (origin === "https://avtomalyarmrpl.ru") return "";
+  if (!origin) return process.env.VERCEL_ENV === "production" ? "invalid_origin" : "";
+
+  const isLocalPreview = process.env.VERCEL_ENV !== "production"
+    && /^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(origin);
+  return isLocalPreview ? "" : "invalid_origin";
+}
+
+function consumeRateLimit(req) {
+  const forwardedFor = cleanString(req.headers?.["x-forwarded-for"]);
+  const clientAddress = forwardedFor.split(",", 1)[0].trim() || cleanString(req.socket?.remoteAddress) || "unknown";
+  const clientKey = crypto.createHash("sha256").update(clientAddress).digest("hex");
+  const now = Date.now();
+  if (rateLimitBuckets.size > 1000) {
+    for (const [key, bucket] of rateLimitBuckets) {
+      if (now - bucket.startedAt >= RATE_LIMIT_WINDOW_MS) rateLimitBuckets.delete(key);
+    }
+  }
+
+  const bucket = rateLimitBuckets.get(clientKey);
+  if (!bucket || now - bucket.startedAt >= RATE_LIMIT_WINDOW_MS) {
+    rateLimitBuckets.set(clientKey, { count: 1, startedAt: now });
+    return { allowed: true, retryAfterSeconds: 0 };
+  }
+
+  if (bucket.count >= RATE_LIMIT_MAX_REQUESTS) {
+    const remainingMs = RATE_LIMIT_WINDOW_MS - (now - bucket.startedAt);
+    return { allowed: false, retryAfterSeconds: Math.max(1, Math.ceil(remainingMs / 1000)) };
+  }
+
+  bucket.count += 1;
+  return { allowed: true, retryAfterSeconds: 0 };
+}
+
+function requestTooLargeError() {
+  const error = new Error("request_too_large");
+  error.code = "request_too_large";
+  return error;
+}
+
 async function readRequestBody(req) {
-  if (req.body && typeof req.body === "object") return req.body;
+  const contentLength = Number(req.headers?.["content-length"] || 0);
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) throw requestTooLargeError();
+
+  if (req.body && typeof req.body === "object") {
+    if (Buffer.byteLength(JSON.stringify(req.body), "utf8") > MAX_BODY_BYTES) throw requestTooLargeError();
+    return req.body;
+  }
 
   if (typeof req.body === "string") {
-    return parseBodyString(req.body, req.headers["content-type"]);
+    if (Buffer.byteLength(req.body, "utf8") > MAX_BODY_BYTES) throw requestTooLargeError();
+    return parseBodyString(req.body, req.headers?.["content-type"]);
   }
 
   const chunks = [];
+  let totalBytes = 0;
 
   for await (const chunk of req) {
-    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+    const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+    totalBytes += buffer.length;
+    if (totalBytes > MAX_BODY_BYTES) throw requestTooLargeError();
+    chunks.push(buffer);
   }
 
   const rawBody = Buffer.concat(chunks).toString("utf8");
-  return parseBodyString(rawBody, req.headers["content-type"]);
+  return parseBodyString(rawBody, req.headers?.["content-type"]);
 }
-
 function parseBodyString(rawBody, contentType = "") {
   if (!rawBody) return {};
 
@@ -93,12 +167,23 @@ function normalizeLead(body) {
     task: truncate(cleanString(body.task), 1200),
     personalDataAgreement: toBoolean(body.personalDataAgreement),
     offerAgreement: toBoolean(body.offerAgreement),
-    pageUrl: truncate(cleanString(body.pageUrl), 500),
-    source: truncate(cleanString(body.source) || "request_form", 80)
+    pageUrl: normalizePagePath(body.pageUrl),
+    source: truncate(cleanString(body.source), 80),
+    website: truncate(cleanString(body.website), 200),
+    formElapsedMs: normalizeFiniteNumber(body.formElapsedMs)
   };
 }
 
+function normalizePagePath(value) {
+  const path = truncate(cleanString(value), 500).split(/[?#]/, 1)[0];
+  return path.startsWith("/") ? path : "";
+}
+
 function validateLead(lead) {
+  if (lead.website) return "spam_detected";
+  if (lead.source !== "request_form") return "invalid_source";
+  if (lead.formElapsedMs < MIN_FORM_ELAPSED_MS) return "submission_too_fast";
+  if (lead.formElapsedMs > MAX_FORM_ELAPSED_MS) return "invalid_form_timing";
   if (lead.name.length < 2) return "invalid_name";
   if (lead.phone.replace(/\D/g, "").length < 10) return "invalid_phone";
   if (lead.task.length < 8) return "invalid_task";
@@ -117,6 +202,11 @@ function buildTelegramMessage(lead) {
     `Страница: ${lead.pageUrl || "не указано"}`,
     `Дата/время сервера: ${formatMoscowDate(new Date())} МСК`
   ].join("\n");
+}
+
+function normalizeFiniteNumber(value) {
+  const number = Number(value);
+  return Number.isFinite(number) && number >= 0 ? number : 0;
 }
 
 function cleanString(value) {
