@@ -162,8 +162,8 @@ const setupRevealMotion = () => {
     revealItems.add(element);
   };
 
-  document.querySelectorAll(".hero, .page-section").forEach((element) => addReveal(element, "reveal-section"));
-  document.querySelectorAll(".hero__title, .hero__lead, .about-heading h2, .services-heading h2, .section-heading h2, .faq-layout__heading h2, .contact-copy h2")
+  document.querySelectorAll(".page-section").forEach((element) => addReveal(element, "reveal-section"));
+  document.querySelectorAll(".about-heading h2, .services-heading h2, .section-heading h2, .faq-layout__heading h2, .contact-copy h2")
     .forEach((element) => addReveal(element, "reveal-title"));
 
   const staggerGroups = [
@@ -580,5 +580,4 @@ requestFields.forEach((field) => {
     field.removeAttribute("aria-invalid");
   });
 });
-
 

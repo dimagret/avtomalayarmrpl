@@ -6565,6 +6565,20 @@ body[data-page-type="service"] .contact-copy .service-boundary {
   }
 }
 
+/* Keep process-card headings readable between tablet and wide desktop layouts. */
+@media (min-width: 1121px) and (max-width: 1439px) {
+  .trust-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1440px) {
+  .trust-card h3 {
+    min-width: 0;
+    font-size: clamp(1.25rem, 1.6vw, 1.45rem);
+  }
+}
+
 
 .form-honeypot {
   position: absolute;
